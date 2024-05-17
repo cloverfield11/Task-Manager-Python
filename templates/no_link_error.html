@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ooops!...</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .error-container {
+            text-align: center;
+        }
+        .back-to-home-button {
+            text-align: center;
+            display: block;
+            margin: 0 auto;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            width: 200px;
+        }
+
+        .back-to-home-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+  <div class="error-container">
+    <h1>Sorry, link not found for current task!</h1>
+    <a href="{{ url_for('index') }}" class="back-to-home-button">Back home page</a>
+  </div>
+</body>
+</html>

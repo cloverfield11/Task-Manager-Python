@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles_login.css') }}">
+    <title>Registration</title>
+</head>
+<body>
+    <h1>Registration</h1>
+    <form id="taskid" method="post" action="/register">
+        <label for="username">Login:</label>
+        <input type="text" id="username" name="username" required><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+        {% if error %}
+            <p style="color: red;">Login already used</p>
+        {% endif %}
+        <input type="submit" value="Register">
+    </form>
+    <p style="text-align:center;">Already have account? <br> <a href="/login">Login</a>.</p>
+</body>
+</html>

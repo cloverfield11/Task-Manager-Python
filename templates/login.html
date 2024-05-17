@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles_login.css') }}">
+    <title>Login</title>
+</head>
+
+<body>
+    <h1>Task Manager<br>Login Form</h1>
+    <form method="post" action="/login" id="loginForm">
+        <label for="username">Login:</label>
+        <input type="text" id="username" name="username" required><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+        {% if error %}
+        <p style="color: red;">Incorrect login or password</p>
+        {% endif %}
+        <input type="submit" value="Enter Task Manager">
+        <input type="submit" onclick="loginAsDemo()" value="Login 1 click">
+    </form>
+    <p style="text-align:center;">Need account? <br> <a href="/register">Register!</a></p>
+    <script>
+        function loginAsDemo() {
+            var form = document.getElementById("loginForm");
+
+            if (form) {
+                form.username.value = "advisor";
+                form.password.value = "1234567890";
+                form.submit();
+            } else {
+                console.error("Form not found");
+            }
+        }
+    </script>
+</body>
+
+</html>

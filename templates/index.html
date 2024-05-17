@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tasks</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script>
+      function toggleCategory(category) {
+          var categoryElement = document.querySelector("." + category + " ul");
+          var toggleElement = document.querySelector("." + category + " .category-toggle");
+
+          var categoryDisplayStyle = window.getComputedStyle(categoryElement).getPropertyValue('display');
+
+          if (categoryDisplayStyle === "none" || categoryDisplayStyle === "") {
+              categoryElement.style.display = "block";
+              toggleElement.innerHTML = "▼";
+          } else {
+              categoryElement.style.display = "none";
+              toggleElement.innerHTML = "►";
+          }
+      }
+  </script>
+</head>
+<body>
+    <nav class="navbar">
+        {% if 'username' in session %}
+        <h1>Task Manager</h1>
+        {% endif %}
+        <ul class="nav-list">
+            {% if 'username' in session and session['username'] == 'admin' %}
+                <li id="nav"><a href="{{ url_for('add_task') }}">Add task</a></li>
+            {% else %}
+                <p></p>
+            {% endif %}
+            <li id="nav"><a href="{{ url_for('archive_index') }}">Archive</a></li>
+            <li id="nav"><a href="#" id="export-link" onclick="exportDocx()">Download results</a></li>
+            {% if 'username' in session %}
+                <form method="post" action="/logout">
+                    <input type="submit" value="Logout">
+                </form>
+            {% else %}
+                <p>You are not logged in.</p>
+            {% endif %}
+        </ul>
+    </nav>
+  {% if 'username' in session %}
+  <h1 style="text-align: left; margin-left: 15%; margin-top: 2%;">Welcome to task manager, {{ session['username'] }}!</h1>
+  {% endif %}
+    <div class="tasks-container">
+        <div class="main-tasks">
+            <h2>
+                <span class="category-toggle" onclick="toggleCategory('main-tasks')">▼</span>
+                Current tasks
+            </h2>
+            <ul>
+                {% for task in main_tasks %}
+                <li>
+                    <div class="task">
+                        <div class="task-label" style="background-color: {{ task['color'] }}"></div>
+                        <div class="task-content">
+                            <a href="{{ url_for('task', task_id=task['task_id']) }}">
+                                <p>{{ task['task']['TaskName'] }}</p>
+                                <p>Deadline: {{ task['formatted_due_date'] }}</p>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="additional-tasks">
+            <h2>
+                <span class="category-toggle" onclick="toggleCategory('additional-tasks')">▼</span>
+                Additional tasks
+            </h2>
+            <ul>
+                {% for task in additional_tasks %}
+                <li>
+                    <div class="task">
+                        <div class="task-label" style="background-color: {{ task['color'] }}"></div>
+                        <div class="task-content">
+                            <a href="{{ url_for('task', task_id=task['task_id']) }}">
+                                <p>{{ task['task']['TaskName'] }}</p>
+                                <p>Deadline: {{ task['formatted_due_date'] }}</p>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="completed-tasks">
+            <h2>
+                <span class="category-toggle" onclick="toggleCategory('completed-tasks')">▼</span>
+                Complete tasks
+            </h2>
+              <ul>
+                  {% for task in completed_tasks %}
+                  <li>
+                      <div class="task">
+                          <div class="task-label" style="background-color: {{ task['color'] }}"></div>
+                          <div class="task-content">
+                                  <a href="{{ url_for('task', task_id=task['task_id']) }}">
+                                      <p>{{ task['task']['TaskName'] }}</p>
+                                      <p>Deadline: {{ task['formatted_due_date'] }}</p>
+                                  </a>
+                          </div>
+                      </div>
+                  </li>
+                  {% endfor %}
+              </ul>
+          {% if 'username' in session and session['username'] == 'admin' %}
+              <button id="archiveButton" class="btn btn-primary">Mark as archived</button>
+              <button id="moveToArchiveButton" class="btn btn-warning">Move to archive</button>
+          {% else %}
+              <p></p>
+          {% endif %}
+        </div>
+    </div>
+  
+  <script>
+      function exportDocx() {
+          var exportUrl = '{{ url_for('export_docx') }}?export=true';
+          window.location.href = exportUrl;
+      }
+
+      document.getElementById('export-link').addEventListener('click', exportDocx);
+
+      $(document).ready(function () {
+          $("#archiveButton").click(function () {
+              $.ajax({
+                  type: "POST",
+                  url: "/archive_tasks",
+                  success: function (response) {
+                      console.log(response);
+                      location.reload();
+                  },
+                  error: function (error) {
+                      console.error('Error archiving tasks:', error);
+                  }
+              });
+          });
+      });
+
+      $(document).ready(function () {
+          $("#moveToArchiveButton").click(function () {
+              $.ajax({
+                  type: "POST",
+                  url: "/move_to_archive",
+                  success: function (response) {
+                      console.log(response);
+                      location.reload();
+                  },
+                  error: function (error) {
+                      console.error('Error moving tasks to archive:', error);
+                  }
+              });
+          });
+      });
+  </script>
+</body>
+</html>

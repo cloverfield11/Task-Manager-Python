@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Task "{{ task['TaskName'] }}"</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Edit Task: <br> "{{ task['TaskName'] }}"</h1>
+  <div class="edit-tasks-container">
+    <form id="tasklisting" method="POST" action="{{ url_for('edit_task', task_id=task_id) }}">
+        <label for="title">Task Name:</label>
+        <input type="text" name="title" value="{{ task['TaskName'] }}" required><br>
+        <label for="description">Task Description:</label>
+        <textarea name="description" required>{{ task['DescrTask'] }}</textarea><br>
+        <label for="category">Category:</label>
+        <select name="category">
+            <option value="Current tasks" {% if task['CatTask'] == 'Current tasks' %}selected{% endif %}>Current tasks</option>
+            <option value="Additional tasks" {% if task['CatTask'] == 'Additional tasks' %}selected{% endif %}>Additional tasks</option>
+        </select><br>
+        <label for="priority">Priority:</label>
+        <select name="priority">
+            <option value="High" {% if task['Priority'] == 'High' %}selected{% endif %}>High</option>
+            <option value="Medium" {% if task['Priority'] == 'Medium' %}selected{% endif %}>Medium</option>
+            <option value="Low" {% if task['Priority'] == 'Low' %}selected{% endif %}>Low</option>
+        </select><br>
+        <label for="deadline">Deadline:</label>
+        <input type="date" name="deadline" value="{{ task['Deadline'] }}" required><br>
+      
+        <label for="status">Stage:</label>
+        <select name="status">
+            <option value="First stage" {% if task['StageTask'] == 'First stage' %}selected{% endif %}>First stage</option>
+            <option value="Done 25%" {% if task['StageTask'] == 'Done 25%' %}selected{% endif %}>Done 25%</option>
+            <option value="Done 50%" {% if task['StageTask'] == 'Done 50%' %}selected{% endif %}>Done 50%</option>
+            <option value="Done 75%" {% if task['StageTask'] == 'Done 75%' %}selected{% endif %}>Done 75%</option>
+            <option value="Completed" {% if task['StageTask'] == 'Completed' %}selected{% endif %}>Completed</option>
+        </select><br>
+        <label for="my_comment">Comment:</label>
+        <textarea name="my_comment">{{ task['MyComment'] }}</textarea><br>
+        <label for="filename">Link:</label>
+        <input type="text" name="filename" value="{{ task['filename'] }}"><br>
+        <button type="submit">Save changes</button>
+        <a href="{{ url_for('task', task_id=task_id) }}" class="cancel-button">Cancel</a>
+    </form>
+  </div>
+</body>
+</html>

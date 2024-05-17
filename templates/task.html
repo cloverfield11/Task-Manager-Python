@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ task['TaskName'] }}</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        {% if task['Priority'] == 'High' %}
+        .task-priority { color: red; }
+        {% elif task['Priority'] == 'Medium' %}
+        .task-priority { color: orange; }
+        {% elif task['Priority'] == 'Low' %}
+        .task-priority { color: green; }
+        {% endif %}
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+      {% if 'username' in session %}
+      <h1>Task</h1>
+      {% endif %}
+        <ul class="nav-list" id="taskid">
+                <li id="nav"><a href="{{ url_for('index') }}" class="cancel-button223">Home</a></li>
+            {% if 'username' in session and session['username'] == 'admin' %}
+                <li id="nav"><a href="{{ url_for('add_task') }}">Add task</a></li>
+            {% else %}
+                <p></p>
+            {% endif %}
+            {% if 'username' in session %}
+                <form method="post" action="/logout">
+                    <input type="submit" value="Logout">
+                </form>
+            {% else %}
+                <p>You are not logged in.</p>
+            {% endif %}
+        </ul>
+    </nav>
+  {% if 'username' in session %}
+  <h1 style="text-align: left; margin-left: 15%; margin-top: 2%;">"{{ task['TaskName'] }}"</h1>
+  {% endif %}
+    <div class="task-container">
+        <div class="task-description">
+          <form id="taskid">
+            <p><strong>Description:</strong> <br><br> {{ task['DescrTask'] }}</p>
+            <p><br></p>
+            <p><strong>Priority:</strong> <br><br> <span class="task-priority">{{ task['Priority'] }}</span></p>
+            <p><br></p>
+            <p><strong>Stage:</strong> <br><br> {{ task['StageTask'] }}</p>
+            <p><br></p>
+            <p><strong>Deadline:</strong> <br><br> {{ task['Deadline'] }}</p>
+            </form>
+            <form id="taskid">
+            <p><strong>Result link:</strong> <br><br> <a href="{{ task['filename'] }}" target="_blank" class="cancel-button2">Show Result</a></p>
+          </form>
+        </div>
+      <div class="task-events">
+        <form id="taskid">
+          <p><strong>Progress</strong></p>
+          {% if task['Progress'] %}
+              {% for event in task['Progress'] %}
+                  <p>{{ event['date'] }} - {{ event['description'] }}</p>
+                  {% if not loop.last %}
+                      <span>&rarr;</span>
+                  {% endif %}
+              {% endfor %}
+          {% else %}
+              <p>Empty</p>
+          {% endif %}
+        </form>
+        {% if 'username' in session and session['username'] == 'admin' %}
+            <form id="taskid" method="POST" action="{{ url_for('add_event', task_id=task_id) }}">
+                <label for="new_event">Add a new event:</label>
+                <input type="text" name="new_event" required>
+                <button type="submit">Add event</button>
+            </form>
+        {% else %}
+            <p></p>
+        {% endif %}
+      </div>
+        <div class="task-comment">
+            <form id="taskid">
+                <p><strong>Comment:</strong> <br><br> {{ task['MyComment'] }}</p>
+            </form>
+            <form id="taskid">
+              <p><strong>Comment for advisor:</strong> <br>
+              <p>{{ task['YourComment'] }}</p>
+            </form>
+            <form id="taskid" method="POST" action="{{ url_for('task', task_id=task_id) }}">
+                <p><strong>Advisor comment</strong></p>
+                <textarea name="your_comment"></textarea><br>
+                <button type="submit">Send</button>
+            </form>
+            {% if 'username' in session and session['username'] == 'admin' %}
+                <form id="taskid" method="POST" action="{{ url_for('delete_task', task_id=task_id) }}">
+                    <button type="submit2">Delete task</button>
+                    <a href="{{ url_for('edit_task', task_id=task_id) }}" class="cancel-button2">Edit</a>
+                </form>
+            {% else %}
+                <p></p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Archive</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        {% if 'username' in session %}
+        <h1>Archive</h1>
+        {% endif %}
+        <ul class="nav-list">
+            <li id="nav"><a href="{{ url_for('index') }}">Home</a></li>
+            {% if 'username' in session %}
+                <form method="post" action="/logout">
+                    <input type="submit" value="Logout">
+                </form>
+            {% else %}
+                <p>You are not logged in.</p>
+            {% endif %}
+        </ul>
+    </nav>
+  {% if 'username' in session %}
+  <h1 style="text-align: left; margin-left: 15%; margin-top: 2%;">Welcome to Archive, {{ session['username'] }}!</h1>
+  {% endif %}
+    <div class="tasks-container">
+        <div class="main-tasks">
+            <h2>
+                Current tasks
+            </h2>
+            <ul>
+                {% for task in main_tasks %}
+                <li>
+                                <p>{{ task['task']['TaskName'] }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="additional-tasks">
+            <h2>
+                Additional tasks
+            </h2>
+            <ul>
+                {% for task in additional_tasks %}
+                <li>
+                                <p>{{ task['task']['TaskName'] }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

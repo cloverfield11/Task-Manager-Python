@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add new task</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function setDefaultLink() {
+            var linkInput = document.getElementsByName("filename")[0];
+            if (!linkInput.value) {
+                linkInput.value = "http://87.242.87.245:5000/error/no_link";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Add new task</h1>
+    <div class="add-tasks-container">
+    <form id="tasklisting" method="POST" action="{{ url_for('add_task') }}" onsubmit="setDefaultLink()">
+        <label for="title">Task name:</label>
+        <input type="text" name="title" required><br>
+        <label for="description">Task description:</label>
+        <textarea name="description" required></textarea><br>
+        <label for="category">Task category:</label>
+        <select name="category">
+            <option value="Current tasks">Current tasks</option>
+            <option value="Additional tasks">Additional tasks</option>
+        </select><br>
+        <label for="deadline">Deadline:</label>
+        <input type="date" name="deadline" required><br>
+        <label for="priority">Pryority:</label>
+        <select name="priority">
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+        </select><br>
+        <label for="status">Stage:</label>
+        <select name="status">
+            <option value="First stage">First stage</option>
+            <option value="Done 25%">Done 25%</option>
+            <option value="Done 50%">Done 50%</option>
+            <option value="Done 75%">Done 75%</option>
+            <option value="Completed">Completed</option>
+        </select><br>
+        <label for="my_comment">My comment:</label>
+        <textarea name="my_comment"></textarea><br>
+        <label for="filename">Link:</label>
+        <input type="text" name="filename"><br>
+        <button type="submit">Save task</button>
+        <a href="{{ url_for('index') }}" class="cancel-button">Cancel</a>
+    </form>
+    </div>
+</body>
+</html>
