@@ -12,19 +12,23 @@ To install Tasker, follow these steps:
 ```bash
 git clone https://github.com/cloverfield11/Task-Manager-Python
 ```
-2. Create a virtual environment:
+2. Use project directory:
+```
+cd Task-Manager-Python
+```
+3. Create a virtual environment:
 ```
 python3 -m venv venv
 ```
-3. Activate the virtual environment:
+4. Activate the virtual environment:
 ```bash
 source venv/bin/activate
 ```
-4. Install the required packages:
+5. Install the required packages:
 ```
 pip install -r requirements.txt
 ```
-5. Run the application:
+6. Run the application:
 ```bash
 python3 main.py
 ```
