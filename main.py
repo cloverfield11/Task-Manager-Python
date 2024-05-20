@@ -11,7 +11,7 @@ import openpyxl
 from flask import jsonify
 
 app = Flask(__name__)
-app.secret_key = '54FGHhfd356h56hgh7H'
+app.secret_key = 'CHANGEME'
 tasks_df = pd.read_excel('tasks.xlsx')
 tasks_df['Progress'] = tasks_df['Progress'].apply(lambda x: [] if pd.isna(x) else x)
 editing_task = None
