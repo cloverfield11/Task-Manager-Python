@@ -1,6 +1,8 @@
 Tasker Web App
 ================
 
+<img width="1919" alt="Снимок экрана 2024-05-21 в 15 37 02" src="https://github.com/cloverfield11/Task-Manager-Python/assets/130602166/915945a0-36ec-4b33-b527-181ec4d99cfc">
+
 Tasker is a web application for managing tasks. It allows users to register and log in, view, add, edit, and delete tasks, archive completed tasks, and export completed tasks to a Microsoft Word document.
 
 Installation
